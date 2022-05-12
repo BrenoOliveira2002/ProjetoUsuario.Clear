@@ -9,13 +9,13 @@ class UserController {
     }
     onSubmit(){
 
-       this.formEl.addEventListener("submit",(event) =>{
+       this.formEl.addEventListener("submit",event =>{
 
             event.preventDefault();
 
             let bnt = this.formEl.querySelector("[type=submit]")
 
-            bnt.disabled = true; 
+            bnt.disabled = false; 
 
             let values = this.getValues();
 
@@ -80,10 +80,16 @@ class UserController {
     }
 
     getValues(){
-
+        let isValid = true;
         let user = {};
 
         [...this.formEl.elements].forEach(function(fields, index){
+
+            if (['name', 'email','password'].indexOf(fields.name) > -1 && !fields.value){
+
+                fields.parentElement.classList.add('has-error');
+                isValid = false;
+            }
 
             if (fields.name == "gender") {
                 if (fields.checked) {
@@ -101,6 +107,11 @@ class UserController {
             }
         
         });
+
+        if (!isValid){
+
+            return false;
+        }
     
         return new User ( 
             user.name,

@@ -50,7 +50,7 @@ class User {
     }
 
     set photo(value) {
-       value = this._photo;
+       this._photo = value;
     }
 
 
