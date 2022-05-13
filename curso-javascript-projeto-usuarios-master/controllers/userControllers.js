@@ -1,3 +1,4 @@
+
 class UserController { 
 
     constructor(formIdCreate, formIdUpdate, tableId){
@@ -8,6 +9,7 @@ class UserController {
 
         this.onSubmit();
         this.onEditCancel();
+        this.selectAll();
 
     }
     
@@ -98,6 +100,8 @@ class UserController {
             (content)=>{
 
                 values.photo = content;
+
+                this.insert(values);
 
                 this.addLine(values);
 
@@ -190,7 +194,7 @@ class UserController {
     
         return new User ( 
             user.name,
-            user.gender,
+            user.gender,``
             user.birth,
             user.country,
             user.email,
@@ -201,7 +205,7 @@ class UserController {
         );
     }
 
-    getUsersStorage() {
+    getusersStorage() {
 
         let users = [];
 
@@ -214,12 +218,15 @@ class UserController {
 
     selectAll() {
 
-        let users = this.getUsersStorage
+        let users = this.getusersStorage();
 
-        users.forEach(users => {
+        users.forEach(dataUser => {
 
+            let user = new User();
 
-            this.addLine(users)
+            user.loadFromJSON(dataUser);
+
+            this.addLine(user);
         })
         
 
@@ -227,19 +234,17 @@ class UserController {
 
     insert(data) {
 
-        let users = this.getUsersStorage();
+        let users = this.getusersStorage();
         
         users.push(data);
 
-        sessionStorage.setItem("Users", JSON.stringify(users));
+        sessionStorage.setItem("users", JSON.stringify(users));
 
     }
 
     addLine(dataUser) {
 
         let tr = document.createElement('tr');
-
-        this.insert(dataUser);
 
         tr.dataset.user = JSON.stringify(dataUser);
 
@@ -264,15 +269,16 @@ class UserController {
 
       addEventsTr(tr) {
 
-        tr.querySelector(".btn-delete").addEventListener("click", e => {
+        tr.querySelector(".btn-delete").addEventListener("click", (e) => {
 
-            if(confirm("Deseja realmente excluir?")); {
+            if(confirm("Deseja realmente excluir?")) {
 
                 tr.remove();
 
                 this.updateCount();
 
             }
+        });
 
         tr.querySelector(".btn-edit").addEventListener("click", e => {
 
@@ -310,14 +316,15 @@ class UserController {
                 }
 
                 this.formUpdateEl.querySelector(".photo").src = json._photo;
+                
                 this.showPanelUpdate();
+                
     
             }   
            
        })
+    }
 
-    })
-};
       
 
       showPanelCreate() {
