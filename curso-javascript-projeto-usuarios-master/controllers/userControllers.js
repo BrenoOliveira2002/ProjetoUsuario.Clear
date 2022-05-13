@@ -47,19 +47,11 @@ class UserController {
                     result._photo = content;
                 }
 
-                tr.dataset.user = JSON.stringify(result);
+                let user = new User();
 
-                tr.innerHTML =  `
-                <td><img src=${result._photo} class="img-circle img-sm"></td>
-                 <td>${result._name}</td>
-                 <td>${result._email}</td>
-                 <td>${(result._admin) ? 'Sim' : "Não"}</td>
-                 <td>${Utils.dateFormat(result._register)}</td>
-                 <td>
-                      <button type="button" class="btn btn-primary btn-edit btn-xs btn-flat">Editar</button>
-                      <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
-                </td>
-              `;
+                user.loadFromJSON(result);
+
+                this.getTr(user, tr);
 
                 this.addEventsTr(tr);
 
@@ -244,27 +236,33 @@ class UserController {
 
     addLine(dataUser) {
 
-        let tr = document.createElement('tr');
-
-        tr.dataset.user = JSON.stringify(dataUser);
-
-        tr.innerHTML =  `
-        <td><img src=${dataUser.photo} class="img-circle img-sm"></td>
-         <td>${dataUser.name}</td>
-         <td>${dataUser.email}</td>
-         <td>${(dataUser.admin) ? 'Sim' : "Não"}</td>
-         <td>${Utils.dateFormat(dataUser.register)}</td>
-         <td>
-              <button type="button" class="btn btn-primary btn-edit btn-xs btn-flat">Editar</button>
-              <button type="button" class="btn btn-danger btn-delete btn-xs btn-flat">Excluir</button>
-        </td>
-      `;
-
-      this.addEventsTr(tr);
+        let tr = this.getTr(dataUser);
 
       this.tableEl.appendChild(tr);
 
       this.updateCount()
+    }
+
+    getTr(dataUser, tr = null){
+
+        if  (tr === null) tr = document.createElement('tr');
+
+        tr.dataset.user = JSON.stringify(dataUser);
+
+        tr.innerHTML = `
+            <td><img src=${dataUser.photo} class="img-circle img-sm"></td>
+            <td>${dataUser.name}</td>
+            <td>${dataUser.email}</td>
+            <td>${(dataUser.admin) ? 'Sim' : 'Não'}</td>
+            <td>${Utils.dateFormat(dataUser.register)}</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-edit btn-xs btn-flat">Editar</button>
+                <button type="button" class="btn btn-danger btn-delete btn-xs btn-flat">Excluir</button>
+            </td>
+        `;
+
+      this.addEventsTr(tr);
+      return tr;
     }
 
       addEventsTr(tr) {
@@ -329,7 +327,7 @@ class UserController {
 
       showPanelCreate() {
 
-        document.querySelector("#box-user-create").style.display = "block"; 
+            document.querySelector("#box-user-create").style.display = "block"; 
         document.querySelector("#box-user-update").style.display = "none";
 
       }
