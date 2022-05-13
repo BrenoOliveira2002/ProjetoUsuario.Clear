@@ -201,9 +201,45 @@ class UserController {
         );
     }
 
+    getUsersStorage() {
+
+        let users = [];
+
+        if (sessionStorage.getItem("users")) {
+
+            users = JSON.parse(sessionStorage.getItem("users"));
+    }
+        return users;
+}
+
+    selectAll() {
+
+        let users = this.getUsersStorage
+
+        users.forEach(users => {
+
+
+            this.addLine(users)
+        })
+        
+
+    }
+
+    insert(data) {
+
+        let users = this.getUsersStorage();
+        
+        users.push(data);
+
+        sessionStorage.setItem("Users", JSON.stringify(users));
+
+    }
+
     addLine(dataUser) {
 
         let tr = document.createElement('tr');
+
+        this.insert(dataUser);
 
         tr.dataset.user = JSON.stringify(dataUser);
 
