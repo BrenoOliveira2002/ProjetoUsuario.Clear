@@ -234,6 +234,8 @@ class UserController {
 
                 tr.remove();
 
+                this.updateCount();
+
             }
 
         tr.querySelector(".btn-edit").addEventListener("click", e => {
