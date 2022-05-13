@@ -233,6 +233,7 @@ class UserController {
             if(confirm("Deseja realmente excluir?")); {
 
                 tr.remove();
+
             }
 
         tr.querySelector(".btn-edit").addEventListener("click", e => {
@@ -276,7 +277,10 @@ class UserController {
             }   
            
        })
-      }
+
+    })
+};
+      
 
       showPanelCreate() {
 
