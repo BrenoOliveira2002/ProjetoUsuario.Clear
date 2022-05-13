@@ -51,6 +51,8 @@ class UserController {
 
                 user.loadFromJSON(result);
 
+                user.save();
+
                 this.getTr(user, tr);
 
                 this.addEventsTr(tr);
@@ -93,7 +95,7 @@ class UserController {
 
                 values.photo = content;
 
-                this.insert(values);
+                values.save();
 
                 this.addLine(values);
 
@@ -166,7 +168,9 @@ class UserController {
                 if (fields.checked) {
         
                     user[fields.name] = fields.value;
-        
+          
+
+                    
          }
             }
             else if (fields.name == "admin"){
@@ -221,16 +225,6 @@ class UserController {
             this.addLine(user);
         })
         
-
-    }
-
-    insert(data) {
-
-        let users = this.getusersStorage();
-        
-        users.push(data);
-
-        localStorage.setItem("users", JSON.stringify(users));
 
     }
 
